@@ -14,6 +14,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
+@Builder
 public class Transaction {
 
     @Id
