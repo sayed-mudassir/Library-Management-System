@@ -9,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class StudentRequest {
     String name;
     int age;

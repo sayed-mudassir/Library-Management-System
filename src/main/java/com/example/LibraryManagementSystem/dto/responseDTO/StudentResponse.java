@@ -8,12 +8,11 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class StudentResponse {
     String name;
 
     String email;
-
-    String messaage;
 
     String cardIssuedNo;
 

@@ -1,5 +1,6 @@
 package com.example.LibraryManagementSystem.service;
 
+import com.example.LibraryManagementSystem.Transformer.AuthorTransformer;
 import com.example.LibraryManagementSystem.dto.responseDTO.AuthorResponse;
 import com.example.LibraryManagementSystem.dto.responseDTO.AuthorWithBooklist;
 import com.example.LibraryManagementSystem.exceptions.AuthorNotFoundException;
@@ -18,19 +19,17 @@ public class AuthorService {
     @Autowired
     AuthorRepository authorRepository;
 
-    public String addAuthor(Author author) {
-        Author savedAuthor = authorRepository.save(author);
+    public String addAuthor(String name , int age ,String email) {
+        Author author = AuthorTransformer.PrepareAuthor(name,age,email);
+        authorRepository.save(author);
         return "author added !!!!!";
     }
 
     public AuthorResponse getAuthor(int id) {
         Optional<Author> optionalAuthor = authorRepository.findById(id);
         if(optionalAuthor.isEmpty()) throw new AuthorNotFoundException("invalid ID !!!!");
-        AuthorResponse authorResponse = new AuthorResponse();
-        authorResponse.setAge(optionalAuthor.get().getAge());
-        authorResponse.setName(optionalAuthor.get().getName());
-        authorResponse.setEmail(optionalAuthor.get().getEmail());
-        return authorResponse;
+
+        return AuthorTransformer.AuthorToAuthorResponse(optionalAuthor.get());
     }
 
     public AuthorWithBooklist getAuthorWithBooklist(int id) {

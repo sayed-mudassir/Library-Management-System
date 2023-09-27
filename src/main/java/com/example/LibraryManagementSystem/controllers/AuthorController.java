@@ -18,8 +18,8 @@ public class AuthorController {
     @Autowired
     AuthorService authorService;
     @PostMapping("/add")
-    public ResponseEntity addAuthor(@RequestBody Author author){
-        String response = authorService.addAuthor(author);
+    public ResponseEntity addAuthor(@RequestParam("name") String name , @RequestParam("age") int age, @RequestParam("email") String email){
+        String response = authorService.addAuthor(name,age,email);
         return new ResponseEntity(response, HttpStatus.CREATED);
     }
     @GetMapping("/get/{id}")

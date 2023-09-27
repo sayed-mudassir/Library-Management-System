@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class AuthorWithBooklist extends AuthorResponse {
     List<String> books = new ArrayList<>();
 

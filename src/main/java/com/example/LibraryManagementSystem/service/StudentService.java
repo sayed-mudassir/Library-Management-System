@@ -2,6 +2,8 @@ package com.example.LibraryManagementSystem.service;
 
 import com.example.LibraryManagementSystem.Enum.CardStatus;
 import com.example.LibraryManagementSystem.Enum.Gender;
+import com.example.LibraryManagementSystem.Transformer.LibraryCardTransformer;
+import com.example.LibraryManagementSystem.Transformer.StudentTransformer;
 import com.example.LibraryManagementSystem.dto.requestDTO.StudentRequest;
 import com.example.LibraryManagementSystem.dto.responseDTO.StudentResponse;
 import com.example.LibraryManagementSystem.dto.responseDTO.getStudentResponse;
@@ -21,37 +23,23 @@ public class StudentService {
     @Autowired
     StudentRepository studentRepository;
     public StudentResponse addStudent(StudentRequest studentRequest) {
-        Student student = new Student();
-        student.setAge(studentRequest.getAge());
-        student.setName(studentRequest.getName());
-        student.setEmail(studentRequest.getEmail());
-        student.setGender(studentRequest.getGender());
-
-        LibraryCard libraryCard = new LibraryCard();
-        libraryCard.setCardNo(String.valueOf(UUID.randomUUID()));
-        libraryCard.setCardStatus(CardStatus.ACTIVE);
-        libraryCard.setStudent(student);
-        student.setLibraryCard(libraryCard);
+        Student student = StudentTransformer.StudentRequestToStudent(studentRequest);
+        LibraryCard libraryCard = LibraryCardTransformer.PrepareLibraryCard(student);
         Student savedStudent = studentRepository.save(student);
 
-        StudentResponse studentResponse = new StudentResponse();
-        studentResponse.setName(savedStudent.getName());
-        studentResponse.setEmail(savedStudent.getEmail());
-        studentResponse.setMessaage("you have been registered");
-        studentResponse.setCardIssuedNo(savedStudent.getLibraryCard().getCardNo());
-        return studentResponse;
+        return  StudentTransformer.StudentToStudentResponse(student);
     }
 
     public getStudentResponse getStudent(int regNo) {
         Optional<Student> studentOptional = studentRepository.findById(regNo);
         if(studentOptional.isPresent()) {
-            getStudentResponse getStudentResponse = new getStudentResponse();
-            getStudentResponse.setName(studentOptional.get().getName());
-            getStudentResponse.setEmail(studentOptional.get().getEmail());
-            getStudentResponse.setGender(studentOptional.get().getGender());
-            getStudentResponse.setAge(studentOptional.get().getAge());
-            getStudentResponse.setLibraryCardNo(studentOptional.get().getLibraryCard().getCardNo());
-            return getStudentResponse;
+          return   getStudentResponse.builder()
+                    .age(studentOptional.get().getAge())
+                    .email(studentOptional.get().getEmail())
+                    .name(studentOptional.get().getName())
+                    .gender(studentOptional.get().getGender())
+                    .libraryCardNo(studentOptional.get().getLibraryCard().getCardNo())
+                    .build();
         }
         return null;
     }

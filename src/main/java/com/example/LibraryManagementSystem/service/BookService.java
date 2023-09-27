@@ -1,6 +1,7 @@
 package com.example.LibraryManagementSystem.service;
 
 import com.example.LibraryManagementSystem.Enum.Genre;
+import com.example.LibraryManagementSystem.Transformer.BookTransformer;
 import com.example.LibraryManagementSystem.dto.requestDTO.BookRequest;
 import com.example.LibraryManagementSystem.dto.responseDTO.BookResponse;
 import com.example.LibraryManagementSystem.exceptions.AuthorNotFoundException;
@@ -26,22 +27,12 @@ public class BookService {
     public BookResponse addBook(BookRequest bookRequest) {
         Optional<Author> authorOptional = authorRepository.findById(bookRequest.getAuthorId());
         if(authorOptional.isEmpty()) throw new AuthorNotFoundException("Invalid author id !!");
-        Book book = new Book();
+        Book book = BookTransformer.BookRequestToBook(bookRequest,authorOptional.get());
         Author author = authorOptional.get();
-        book.setCost(bookRequest.getCost());
-        book.setGenre(bookRequest.getGenre());
-        book.setTittle(bookRequest.getTittle());
-        book.setNoOfPages(bookRequest.getNoOfPages());
-        book.setAuthor(author);
         author.getBook().add(book);
         authorRepository.save(author);
-        BookResponse bookResponse = new BookResponse();
-        bookResponse.setTittle(book.getTittle());
-        bookResponse.setGenre(book.getGenre());
-        bookResponse.setAuthorName(book.getAuthor().getName());
-        bookResponse.setNoOfPages(book.getNoOfPages());
-        bookResponse.setCost(book.getCost());
-        return bookResponse;
+        return BookTransformer.BookToBookResponse(book);
+
 
 
 
@@ -49,13 +40,7 @@ public class BookService {
     public BookResponse getBook(int id) {
         Optional<Book> bookOptional = bookRepository.findById(id);
         if (bookOptional.isEmpty()) throw new BookNotFoundException("invalid book Id");
-        BookResponse bookResponse = new BookResponse();
-        bookResponse.setTittle(bookOptional.get().getTittle());
-        bookResponse.setCost(bookOptional.get().getCost());
-        bookResponse.setGenre(bookOptional.get().getGenre());
-        bookResponse.setAuthorName(bookOptional.get().getAuthor().getName());
-        bookResponse.setNoOfPages(bookOptional.get().getNoOfPages());
-        return bookResponse;
+        return BookTransformer.BookToBookResponse(bookOptional.get());
     }
 
     public String updateGenre(int id,Genre genre) {
@@ -73,12 +58,7 @@ public class BookService {
         List<Book> bookList = bookRepository.findByGenre(genre);
         List<BookResponse> bookResponseList = new ArrayList<>();
         for(Book book:bookList){
-            BookResponse bookResponse = new BookResponse();
-            bookResponse.setTittle(book.getTittle());
-            bookResponse.setCost(book.getCost());
-            bookResponse.setGenre(book.getGenre());
-            bookResponse.setAuthorName(book.getAuthor().getName());
-            bookResponse.setNoOfPages(book.getNoOfPages());
+            BookResponse bookResponse = BookTransformer.BookToBookResponse(book);
             bookResponseList.add(bookResponse);
         }
         return bookResponseList;
@@ -88,12 +68,7 @@ public class BookService {
         List<Book> bookList= bookRepository.getByGenreAndCostGreaterThan(genre,cost);
         List<BookResponse> bookResponseList = new ArrayList<>();
         for (Book b : bookList){
-            BookResponse bookResponse = new BookResponse();
-            bookResponse.setTittle(b.getTittle());
-            bookResponse.setCost(b.getCost());
-            bookResponse.setGenre(b.getGenre());
-            bookResponse.setAuthorName(b.getAuthor().getName());
-            bookResponse.setNoOfPages(b.getNoOfPages());
+            BookResponse bookResponse = BookTransformer.BookToBookResponse(b);
             bookResponseList.add(bookResponse);
         }
         return bookResponseList;
@@ -103,12 +78,7 @@ public class BookService {
         List<Book> bookList = bookRepository.getBookByNumberOfPagesRange(a,b);
         List<BookResponse> bookResponseList = new ArrayList<>();
         for (Book book : bookList){
-            BookResponse bookResponse = new BookResponse();
-            bookResponse.setTittle(book.getTittle());
-            bookResponse.setCost(book.getCost());
-            bookResponse.setGenre(book.getGenre());
-            bookResponse.setAuthorName(book.getAuthor().getName());
-            bookResponse.setNoOfPages(book.getNoOfPages());
+            BookResponse bookResponse = BookTransformer.BookToBookResponse(book);
             bookResponseList.add(bookResponse);
         }
         return bookResponseList;
