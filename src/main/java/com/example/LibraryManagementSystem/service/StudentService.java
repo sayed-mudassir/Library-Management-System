@@ -25,9 +25,12 @@ public class StudentService {
     public StudentResponse addStudent(StudentRequest studentRequest) {
         Student student = StudentTransformer.StudentRequestToStudent(studentRequest);
         LibraryCard libraryCard = LibraryCardTransformer.PrepareLibraryCard(student);
+        libraryCard.setStudent(student);
+        student.setLibraryCard(libraryCard);
         Student savedStudent = studentRepository.save(student);
 
-        return  StudentTransformer.StudentToStudentResponse(student);
+        StudentResponse studentResponse =  StudentTransformer.StudentToStudentResponse(savedStudent);
+        return studentResponse;
     }
 
     public getStudentResponse getStudent(int regNo) {
@@ -65,8 +68,13 @@ public class StudentService {
         return null;
     }
 
-    public Object getAllStudents() {
-        return studentRepository.findAll();
+    public List<StudentResponse> getAllStudents() {
+        List<Student> studentList = studentRepository.findAll();
+        List<StudentResponse> studentResponseList = new ArrayList<>();
+        for (Student student : studentList){
+            studentResponseList.add(StudentTransformer.StudentToStudentResponse(student));
+        }
+        return studentResponseList;
     }
 
     public List<String> getAllMale(Gender gender){

@@ -63,7 +63,7 @@ public class BookController {
         return new ResponseEntity(bookService.getBookByNumberOfPagesRange(a,b),HttpStatus.FOUND);
     }
     @GetMapping("/get-author-by-genre")
-    public ResponseEntity getAuthorByGenre(Genre genre){
+    public ResponseEntity getAuthorByGenre(@RequestParam("genre") Genre genre){
         return new ResponseEntity(bookService.getAuthorByGenre(genre),HttpStatus.FOUND);
     }
 }

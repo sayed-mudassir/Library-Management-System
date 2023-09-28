@@ -65,11 +65,11 @@ public class BookService {
     }
 
     public List<BookResponse> getByGenreAndCostGreaterThan(Genre genre, double cost) {
-        List<Book> bookList= bookRepository.getByGenreAndCostGreaterThan(genre,cost);
+        List<Book> bookList = bookRepository.getByGenreAndCostGreaterThan(genre,cost);
+
         List<BookResponse> bookResponseList = new ArrayList<>();
-        for (Book b : bookList){
-            BookResponse bookResponse = BookTransformer.BookToBookResponse(b);
-            bookResponseList.add(bookResponse);
+        for (Book book: bookList){
+            bookResponseList.add(BookTransformer.BookToBookResponse(book));
         }
         return bookResponseList;
     }

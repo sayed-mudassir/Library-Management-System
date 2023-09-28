@@ -7,6 +7,7 @@ import com.example.LibraryManagementSystem.model.Student;
 public class StudentTransformer {
     public static Student StudentRequestToStudent(StudentRequest studentRequest){
         return Student.builder()
+                .name(studentRequest.getName())
                 .age(studentRequest.getAge())
                 .email(studentRequest.getEmail())
                 .gender(studentRequest.getGender())
@@ -15,7 +16,8 @@ public class StudentTransformer {
     public static StudentResponse StudentToStudentResponse(Student student){
         return StudentResponse.builder()
                 .name(student.getName())
-                .email(student.getName())
+                .email(student.getEmail())
+                .cardIssuedNo(student.getLibraryCard().getCardNo())
                 .build();
     }
 }

@@ -11,7 +11,6 @@ public class LibraryCardTransformer {
         return LibraryCard.builder()
                 .cardStatus(CardStatus.ACTIVE)
                 .cardNo(String.valueOf(UUID.randomUUID()))
-                .student(student)
                 .build();
     }
 }

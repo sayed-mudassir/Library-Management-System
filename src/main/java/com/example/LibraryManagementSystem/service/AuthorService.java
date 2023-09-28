@@ -2,7 +2,7 @@ package com.example.LibraryManagementSystem.service;
 
 import com.example.LibraryManagementSystem.Transformer.AuthorTransformer;
 import com.example.LibraryManagementSystem.dto.responseDTO.AuthorResponse;
-import com.example.LibraryManagementSystem.dto.responseDTO.AuthorWithBooklist;
+//import com.example.LibraryManagementSystem.dto.responseDTO.AuthorWithBooklist;
 import com.example.LibraryManagementSystem.exceptions.AuthorNotFoundException;
 import com.example.LibraryManagementSystem.model.Author;
 import com.example.LibraryManagementSystem.model.Book;
@@ -32,20 +32,15 @@ public class AuthorService {
         return AuthorTransformer.AuthorToAuthorResponse(optionalAuthor.get());
     }
 
-    public AuthorWithBooklist getAuthorWithBooklist(int id) {
+    public List<String> getAuthorWithBooklist(int id) {
         Optional<Author> authorOptional = authorRepository.findById(id);
         if(authorOptional.isEmpty()) throw new AuthorNotFoundException("Invalid ID !!!!!");
-        AuthorWithBooklist authorWithBooklist = new AuthorWithBooklist();
-        authorWithBooklist.setName(authorOptional.get().getName());
-        authorWithBooklist.setAge(authorOptional.get().getAge());
-        authorWithBooklist.setEmail(authorOptional.get().getEmail());
         List<String> books = new ArrayList<>();
         List<Book> bookList = authorOptional.get().getBook();
         for (Book b :bookList){
             books.add(b.getTittle());
         }
-        authorWithBooklist.setBooks(books);
-        return authorWithBooklist;
+        return books;
     }
 
     public String updateEmail(int id, String email) {

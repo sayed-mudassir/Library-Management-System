@@ -1,7 +1,7 @@
 package com.example.LibraryManagementSystem.controllers;
 
 import com.example.LibraryManagementSystem.dto.responseDTO.AuthorResponse;
-import com.example.LibraryManagementSystem.dto.responseDTO.AuthorWithBooklist;
+//import com.example.LibraryManagementSystem.dto.responseDTO.AuthorWithBooklist;
 import com.example.LibraryManagementSystem.model.Author;
 import com.example.LibraryManagementSystem.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +35,8 @@ public class AuthorController {
     @GetMapping("/get-author-With-BookList/{id}")
     public ResponseEntity getAuthorWithBooklist(@PathVariable("id") int id){
         try {
-            AuthorWithBooklist authorWithBooklist = authorService.getAuthorWithBooklist(id);
-            return new ResponseEntity(authorWithBooklist,HttpStatus.FOUND);
+            List<String> Booklist = authorService.getAuthorWithBooklist(id);
+            return new ResponseEntity(Booklist,HttpStatus.FOUND);
         }
         catch (Exception e) {
             return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
