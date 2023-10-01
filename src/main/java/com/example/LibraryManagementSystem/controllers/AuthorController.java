@@ -2,11 +2,9 @@ package com.example.LibraryManagementSystem.controllers;
 
 import com.example.LibraryManagementSystem.dto.responseDTO.AuthorResponse;
 //import com.example.LibraryManagementSystem.dto.responseDTO.AuthorWithBooklist;
-import com.example.LibraryManagementSystem.model.Author;
-import com.example.LibraryManagementSystem.service.AuthorService;
+import com.example.LibraryManagementSystem.service.impl.AuthorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,16 +14,16 @@ import java.util.List;
 @RequestMapping("author")
 public class AuthorController {
     @Autowired
-    AuthorService authorService;
+    AuthorServiceImpl authorServiceImpl;
     @PostMapping("/add")
     public ResponseEntity addAuthor(@RequestParam("name") String name , @RequestParam("age") int age, @RequestParam("email") String email){
-        String response = authorService.addAuthor(name,age,email);
+        String response = authorServiceImpl.addAuthor(name,age,email);
         return new ResponseEntity(response, HttpStatus.CREATED);
     }
     @GetMapping("/get/{id}")
     public ResponseEntity getAuthor(@PathVariable("id") int id){
         try {
-            AuthorResponse authorResponse = authorService.getAuthor(id);
+            AuthorResponse authorResponse = authorServiceImpl.getAuthor(id);
             return new ResponseEntity(authorResponse,HttpStatus.FOUND);
         }
         catch (Exception e) {
@@ -35,7 +33,7 @@ public class AuthorController {
     @GetMapping("/get-author-With-BookList/{id}")
     public ResponseEntity getAuthorWithBooklist(@PathVariable("id") int id){
         try {
-            List<String> Booklist = authorService.getAuthorWithBooklist(id);
+            List<String> Booklist = authorServiceImpl.getAuthorWithBooklist(id);
             return new ResponseEntity(Booklist,HttpStatus.FOUND);
         }
         catch (Exception e) {
@@ -45,7 +43,7 @@ public class AuthorController {
     @PutMapping("/update-email/{id}")
     public ResponseEntity updateEmail(@PathVariable("id") int id,@RequestParam("email") String email){
         try {
-            String updatedEmail = authorService.updateEmail(id,email);
+            String updatedEmail = authorServiceImpl.updateEmail(id,email);
             return new ResponseEntity(updatedEmail,HttpStatus.FOUND);
         }
         catch (Exception e) {
@@ -54,7 +52,7 @@ public class AuthorController {
     }
     @GetMapping("/autthor-with-n-books")
     public ResponseEntity authorWithNNumberOfBooks(@RequestParam("n")int n){
-        List<String> authorList = authorService.authorWithNNumberOfBooks(n);
+        List<String> authorList = authorServiceImpl.authorWithNNumberOfBooks(n);
         return new ResponseEntity(authorList,HttpStatus.FOUND);
     }
 }

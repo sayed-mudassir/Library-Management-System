@@ -1,7 +1,7 @@
 package com.example.LibraryManagementSystem.controllers;
 
 import com.example.LibraryManagementSystem.dto.responseDTO.IssueBookResponse;
-import com.example.LibraryManagementSystem.service.TransactionService;
+import com.example.LibraryManagementSystem.service.impl.TransactionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class TransactionController {
 
     @Autowired
-    TransactionService transactionService;
+    TransactionServiceImpl transactionServiceImpl;
     @GetMapping("/issue-book/book-id/{book-id}/student-id/{student-id}")
     public ResponseEntity getTransaction(@PathVariable("book-id")int bookId, @PathVariable("student-id") int studentId){
 
         try {
-            IssueBookResponse issueBookResponse = transactionService.getTransaction(bookId, studentId);
+            IssueBookResponse issueBookResponse = transactionServiceImpl.getTransaction(bookId, studentId);
             return new ResponseEntity(issueBookResponse,HttpStatus.FOUND);
         }
         catch (Exception e){

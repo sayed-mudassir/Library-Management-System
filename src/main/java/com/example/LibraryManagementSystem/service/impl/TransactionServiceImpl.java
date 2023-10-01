@@ -1,4 +1,4 @@
-package com.example.LibraryManagementSystem.service;
+package com.example.LibraryManagementSystem.service.impl;
 
 import com.example.LibraryManagementSystem.Transformer.TransactionTransformer;
 import com.example.LibraryManagementSystem.dto.responseDTO.IssueBookResponse;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 @Service
-public class TransactionService {
+public class TransactionServiceImpl {
     @Autowired
     TransactionRepository transactionRepository;
     @Autowired
