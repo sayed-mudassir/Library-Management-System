@@ -27,5 +27,15 @@ public class TransactionController {
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+    @GetMapping("/return-book/book-id/{book-id}/student-id/{student-id}")
+    public ResponseEntity returnBookTransaction(@PathVariable("book-id")int bookId, @PathVariable("student-id") int studentId){
 
+        try {
+            IssueBookResponse issueBookResponse = transactionServiceImpl.returnBookTransaction(bookId, studentId);
+            return new ResponseEntity(issueBookResponse,HttpStatus.FOUND);
+        }
+        catch (Exception e){
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

@@ -12,7 +12,7 @@ public class TransactionTransformer {
     public static Transaction PrepareTransaction(Book book, Student student){
         return Transaction.builder()
                 .transactionNumber(String.valueOf(UUID.randomUUID()))
-                .transactionStatus(TransactionStatus.FAILURE)
+                .transactionStatus(TransactionStatus.SUCCESS)
                 .book(book)
                 .libraryCard(student.getLibraryCard())
                 .build();
